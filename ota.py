@@ -38,16 +38,21 @@ class OTAUpdater:
             sleep(0.25)
         print(f'Connected to WiFi, IP is: {sta_if.ifconfig()[0]}')
         
-    def fetch_latest_code(self):
-        """ Fetch the latest code from the repo."""
+    def fetch_latest_code(self)->bool:
+        """ Fetch the latest code from the repo, returns False if not found."""
         
         # Fetch the latest code from the repo.
         response = urequests.get(self.firmware_url)
-
-        print(f'Fetched latest firmware code, status: {response.status_code}, -  {response.text}')
+        if response.status_code == 200:
+            print(f'Fetched latest firmware code, status: {response.status_code}, -  {response.text}')
+    
+            # Save the fetched code to memory
+            self.latest_code = response.text
+            return True
         
-        # Save the fetched code to memory
-        self.latest_code = response.text
+        elif response.status_code == 404:
+            print('Firmware not found.')
+            return False
 
     def update_no_reset(self):
         """ Update the code without resetting the device."""
@@ -75,7 +80,7 @@ class OTAUpdater:
         print('Updating device...', end='')
 
         # Overwrite the old code.
-        os.rename('latest_code.py', 'main.py')  
+        os.rename('latest_code.py', self.filename)  
 
         # Restart the device to run the new code.
         print('Restarting device...')
@@ -107,8 +112,8 @@ class OTAUpdater:
     def download_and_install_update_if_available(self):
         """ Check for updates, download and install them."""
         if self.check_for_updates():
-            self.fetch_latest_code()
-            self.update_no_reset()
-            self.update_and_reset()
+            if self.fetch_latest_code():
+                self.update_no_reset()
+                self.update_and_reset()
         else:
             print('No new updates available.')
