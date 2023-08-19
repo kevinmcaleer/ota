@@ -1,15 +1,14 @@
 # MicroPython Over-the-Air updater
 
----
-
-This library enables you to update your MicroPython projects over the air, at start-up
+This library enables you to update your MicroPython projects over the air, at start-up, or whenever you choose.
 
 ---
 
 To use this code:
-1. add the `ota.py` to your MicroPython device
 
-1. create a file named `WIFI_CONFIG.py`, which contains two variables: `SSID` and `PASSWORD`:
+1. Add the `ota.py` to your MicroPython device
+
+1. Create a file named `WIFI_CONFIG.py`, which contains two variables: `SSID` and `PASSWORD`:
 
     ```python
     SSID = "my wifi hotspot name"
@@ -36,8 +35,12 @@ To use this code:
 
     ```
 
-    ---
+---
 
 The `OTAUpdater` will connect to github over wifi using your provided wifi credentials, check what the most up-to-date version of the firmware is, compare this to a local file present on the device named `version.json`, which contains the version number of the current on device firmware.
 
 If the local file is not present it will create one with a version number of `0`. If the Github verison is newer it will download the latest file and overwrite the file on the device with the same name, then restart the MicroPython board.
+
+---
+
+If you find this useful, please let me know on our discord server: <https://www.kevsrobots.com/discord>
