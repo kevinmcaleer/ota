@@ -3,7 +3,7 @@ from WIFI_CONFIG import SSID, PASSWORD
 
 firmware_url = "https://raw.githubusercontent.com/kevinmcaleer/ota_test/"
 
-ota_updater = OTAUpdater(SSID, PASSWORD, firmware_url)
+ota_updater = OTAUpdater(SSID, PASSWORD, firmware_url, "test.py")
 # if ota_updater.check_for_updates():
 #     ota_updater.fetch_latest_code()
 #     ota_updater.save_code()

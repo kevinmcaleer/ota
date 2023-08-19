@@ -7,12 +7,13 @@ from time import sleep
 
 class OTAUpdater:
     """ This class handles OTA updates. It connects to the Wi-Fi, checks for updates, downloads and installs them."""
-    def __init__(self, ssid, password, repo_url):
+    def __init__(self, ssid, password, repo_url, filename):
+        self.filename = filename
         self.ssid = ssid
         self.password = password
         self.repo_url = repo_url
         self.version_url = repo_url + 'main/version.json'
-        self.firmware_url = repo_url + 'main/test.py'
+        self.firmware_url = repo_url + 'main/' + filename
 
         # get the current version (stored in version.json)
         if 'version.json' in os.listdir():    
@@ -66,7 +67,7 @@ class OTAUpdater:
         self.latest_code = None
 
         # Overwrite the old code.
-        os.rename('latest_code.py', 'main.py')
+        os.rename('latest_code.py', self.filename)
 
     def update_and_reset(self):
         """ Update the code and reset the device."""
