@@ -8,7 +8,7 @@ To use this code:
 
 1. Add the `ota.py` to your MicroPython device
 
-1. Create a file named `WIFI_CONFIG.py`, which contains two variables: `SSID` and `PASSWORD`:
+1. Create a file named `WIFI_CONFIG.py` on your MicroPython device, which contains two variables: `SSID` and `PASSWORD`:
 
     ```python
     SSID = "my wifi hotspot name"
@@ -33,6 +33,13 @@ To use this code:
     ota_updater = OTAUpdater(SSID, PASSWORD, firmware_url, "test.py")
     ota_updater.download_and_install_update_if_available()
 
+    ```
+1. On your GitHub repository, add a `version.json` file, and add a `version` element to the JSON file, with a version number:
+
+    ```json
+    [
+      "version":3
+    ]
     ```
 
 ---
