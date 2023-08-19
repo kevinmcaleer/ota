@@ -83,7 +83,8 @@ class OTAUpdater:
         os.rename('latest_code.py', self.filename)  
 
         # Restart the device to run the new code.
-        print('Restarting device...')
+        print("Restarting device... (don't worry about an error message after this")
+        sleep(0.25)
         machine.reset()  # Reset the device to run the new code.
         
     def check_for_updates(self):
