@@ -35,9 +35,10 @@ class OTAUpdater:
         # Necessary URL manipulations
         version_url = repo_url.replace("raw.githubusercontent.com", "github.com")  # Change the domain
         version_url = version_url.replace("/", "§", 4)                             # Temporary change for upcoming replace
-        version_url = version_url.replace("/", "latest-commit/", 1)                # Replacing for latest commit
+        version_url = version_url.replace("/", "/latest-commit/", 1)                # Replacing for latest commit
         version_url = version_url.replace("§", "/", 4)                             # Rollback Temporary change
         version_url = version_url + filename                                       # Add the targeted filename
+        
         return version_url
 
     def connect_wifi(self):
@@ -107,14 +108,12 @@ class OTAUpdater:
         self.connect_wifi()
 
         print('Checking for latest version...')
-        response = urequests.get(self.version_url)
+        headers = {"accept": "application/json"} 
+        response = urequests.get(self.version_url, headers=headers)
         
         data = json.loads(response.text)
        
-        # Turn list to dict using dictionary comprehension
-        my_dict = {data[i]: data[i + 1] for i in range(0, len(data), 2)}
-        
-        self.latest_version = my_dict['oid']  
+        self.latest_version = data['oid']                   # Access directly the id managed by GitHub
         print(f'latest version is: {self.latest_version}')
         
         # compare versions
