@@ -25,7 +25,7 @@ To use this code:
 
     ```
 
-    where `<username>` is your github username, `<repo_name>` is the name of the repository to check for updates and `<branch_name>` is the name of the brnach to monitor.
+    where `<username>` is your github username, `<repo_name>` is the name of the repository to check for updates and `<branch_name>` is the name of the branch to monitor.
 
 1. Add this to your main program code:
 
