@@ -34,7 +34,7 @@ To use this code:
     ota_updater.download_and_install_update_if_available()
 
     ```
-1. ~~On your GitHub repository, add a `version.json` file, and add a `version` element to the JSON file, with a version number:~~ ** It is not necessary to add the version file anymore as the versioning is based on the commit id, managed by GitHub. **
+1. ~~On your GitHub repository, add a `version.json` file, and add a `version` element to the JSON file, with a version number:~~ **It is not necessary to add the version file anymore as the versioning is based on the commit id, managed by GitHub.**
 
     ```json
     [
