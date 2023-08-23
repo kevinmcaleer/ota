@@ -21,11 +21,11 @@ To use this code:
     from ota import OTAUpdater
     from WIFI_CONFIG import SSID, PASSWORD
 
-    firmware_url = "https://raw.githubusercontent.com/<username>/<repo_name>/"
+    firmware_url = "https://raw.githubusercontent.com/<username>/<repo_name>/<branch_name>"
 
     ```
 
-    where `<username>` is your github username and `<repo_name>` is the name of the repository to check for updates.
+    where `<username>` is your github username, `<repo_name>` is the name of the repository to check for updates and `<branch_name>` is the name of the brnach to monitor.
 
 1. Add this to your main program code:
 
@@ -34,7 +34,7 @@ To use this code:
     ota_updater.download_and_install_update_if_available()
 
     ```
-1. On your GitHub repository, add a `version.json` file, and add a `version` element to the JSON file, with a version number:
+1. ~~On your GitHub repository, add a `version.json` file, and add a `version` element to the JSON file, with a version number:~~ ** It is not necessary to add the version file anymore as the versioning is based on the commit id, managed by GitHub. **
 
     ```json
     [
@@ -44,9 +44,9 @@ To use this code:
 
 ---
 
-The `OTAUpdater` will connect to github over wifi using your provided wifi credentials, check what the most up-to-date version of the firmware is, compare this to a local file present on the device named `version.json`, which contains the version number of the current on device firmware.
+The `OTAUpdater` will connect to github over wifi using your provided wifi credentials, check what the most up-to-date version of the firmware is, compare this to a local file present on the device named `version.json`, which contains the ~~version number~~ unique commit ID of the current on device firmware.
 
-If the local file is not present it will create one with a version number of `0`. If the Github verison is newer it will download the latest file and overwrite the file on the device with the same name, then restart the MicroPython board.
+If the local file is not present it will create one with a version number of `0`. If the Github version is newer, it will download the latest file and overwrite the file on the device with the same name, then restart the MicroPython board.
 
 ---
 
