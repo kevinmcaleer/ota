@@ -12,8 +12,10 @@ class OTAUpdater:
         self.ssid = ssid
         self.password = password
         self.repo_url = repo_url
-        self.version_url = repo_url + 'main/version.json'
-        self.firmware_url = repo_url + 'main/' + filename
+
+        # self.version_url = repo_url + 'main/version.json'                 # Replacement of the version mechanism by Github's oid
+        self.version_url = self.process_version_url(repo_url, filename)     # Process the new version url
+        self.firmware_url = repo_url + filename                             # Removal of the 'main' branch to allow different sources
 
         # get the current version (stored in version.json)
         if 'version.json' in os.listdir():    
@@ -22,11 +24,23 @@ class OTAUpdater:
             print(f"Current device firmware version is '{self.current_version}'")
 
         else:
-            self.current_version = 0
+            self.current_version = "0"
             # save the current version
             with open('version.json', 'w') as f:
                 json.dump({'version': self.current_version}, f)
             
+    def process_version_url(self, repo_url, filename):
+        """ Convert the file's url to its assoicatied version based on Github's oid management."""
+
+        # Necessary URL manipulations
+        version_url = repo_url.replace("raw.githubusercontent.com", "github.com")  # Change the domain
+        version_url = version_url.replace("/", "§", 4)                             # Temporary change for upcoming replace
+        version_url = version_url.replace("/", "/latest-commit/", 1)                # Replacing for latest commit
+        version_url = version_url.replace("§", "/", 4)                             # Rollback Temporary change
+        version_url = version_url + filename                                       # Add the targeted filename
+        
+        return version_url
+
     def connect_wifi(self):
         """ Connect to Wi-Fi."""
 
@@ -94,18 +108,16 @@ class OTAUpdater:
         self.connect_wifi()
 
         print('Checking for latest version...')
-        response = urequests.get(self.version_url)
+        headers = {"accept": "application/json"} 
+        response = urequests.get(self.version_url, headers=headers)
         
         data = json.loads(response.text)
        
-        # Turn list to dict using dictionary comprehension
-        my_dict = {data[i]: data[i + 1] for i in range(0, len(data), 2)}
-        
-        self.latest_version = my_dict['version']  
+        self.latest_version = data['oid']                   # Access directly the id managed by GitHub
         print(f'latest version is: {self.latest_version}')
         
         # compare versions
-        newer_version_available = True if self.current_version < self.latest_version else False
+        newer_version_available = True if self.current_version != self.latest_version else False
         
         print(f'Newer version available: {newer_version_available}')    
         return newer_version_available
