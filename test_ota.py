@@ -1,7 +1,7 @@
 from ota import OTAUpdater
 from WIFI_CONFIG import SSID, PASSWORD
 
-firmware_url = "https://raw.githubusercontent.com/pierreyvesbaloche/kevinmca_ota/main/"
+firmware_url = "https://github.com/kevinmcaleer/ota_test/main/"
 
 ota_updater = OTAUpdater(SSID, PASSWORD, firmware_url, "test_ota.py")
 
